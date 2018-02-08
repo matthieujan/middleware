@@ -2,6 +2,8 @@
 
 Matthieu Jan - Info2
 
+Félix Bezançon - Info2
+
 # RMI
 ## Présentation générale
 L'application de java RMI au projet Socialnetwork se compose de :
@@ -46,5 +48,12 @@ Il stocke plusieurs Hashmap gérer :
 Il fait ensuite certaines opérations pour assurer le bon comportement du système (vérifié l'unicité, la validité des tokens ...). Il utilise l'objet callback pour communiquer les modifications de profile aux utilisateurs.
 
 ## RMICallback
-RMICallback fonctionne en deux temps :
-- Le client enregistre un o
+RMICallback fonctionne en deux parties et en trois temps :
+Deux parties :
+- Un RMICallbackClient, côté client
+- Un RMICallbackServer, côté serveur
+
+Trois temps :
+- Le serveur met a disposition un objet RMICallbackServerImpl qui va permettre d'enregistrer des RMICallbackClient
+- Le client enregistre un objet RMICallbackClientImpl auprès du serveur
+- Lorsqu'un update est fait, le serveur invoque les objets enregistrés pour faire les mise à jour.
