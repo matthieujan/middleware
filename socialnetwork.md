@@ -7,11 +7,11 @@ Félix Bezançon - Info2
 # RMI
 ## Présentation générale
 L'application de java RMI au projet Socialnetwork se compose de :
-- Une implementation de ProfileManager avec :
+- Une implémentation de ProfileManager avec :
     - Une interface commune
-    - Une implementation sur le serveur sous forme de RemoteServer
-    - Une implementation sur le client qui va faire des appels au serveur (via l'interface commune)
-- Une implementation de RMICallback avec :
+    - Une implémentation sur le serveur sous forme de RemoteServer
+    - Une implémentation sur le client qui va faire des appels au serveur (via l'interface commune)
+- Une implémentation de RMICallback avec :
     - Une interface client, associé à une implémentation client
     - Une interface serveur, associé à une implémentation serveur
 - Un main pour le client qui lance le GUI
@@ -32,7 +32,7 @@ Initialise le Socialnetwork object et la frame
 
 ## ProfileManager
 ### RMIProfileManagerRemote (common)
-L'interface reprend les méthodes du packages logic, permettant ainsi d'avoir une communication qui ressemble au fonctionnement et soit facile à utilisé.
+L'interface reprend les méthodes du packages logic, permettant ainsi d'avoir une communication qui ressemble au fonctionnement et soit facile à utiliser.
 
 ### RMIProfileManager(client)
 Implémente directement le ProfileManager du package logic. Ces méthodes adaptent quelques éléments (notement les callback) mais font essentiellement des appels aux méthodes de l'objet RMIProfileManagerRemote instancié sur le serveur
