@@ -1,7 +1,7 @@
 package fr.ensibs.socialnetwork.server;
 
-import fr.ensibs.socialnetwork.common.RMICallBackClient;
-import fr.ensibs.socialnetwork.common.RMICallBackServer;
+import fr.ensibs.socialnetwork.RMICallBackClient;
+import fr.ensibs.socialnetwork.RMICallBackServer;
 import fr.ensibs.socialnetwork.core.Profile;
 
 import java.rmi.RemoteException;
@@ -24,7 +24,7 @@ public class RMICallBackServerImpl extends UnicastRemoteObject implements RMICal
         clientList = new Vector();
     }
 
-    public synchronized void registerForCallback( RMICallBackClient callbackClientObject) {
+    public synchronized void registerForCallback( RMICallBackClient callbackClientObject) throws java.rmi.RemoteException {
         // store the callback object into the vector
         if (!(clientList.contains(callbackClientObject))) {
             clientList.addElement(callbackClientObject);
@@ -35,7 +35,7 @@ public class RMICallBackServerImpl extends UnicastRemoteObject implements RMICal
     // cancel its registration for callback
     // @param id is an ID for the client; to be used by
     // the server to uniquely identify the registered client.
-    public synchronized void unregisterForCallback( RMICallBackClient callbackClientObject) {
+    public synchronized void unregisterForCallback( RMICallBackClient callbackClientObject) throws java.rmi.RemoteException {
         if (clientList.removeElement(callbackClientObject)) {
         } else {
             System.out.println( "unregister: clientwasn't registered.");

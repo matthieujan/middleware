@@ -1,6 +1,6 @@
 package fr.ensibs.socialnetwork.client;
 
-import fr.ensibs.socialnetwork.common.RMICallBackClient;
+import fr.ensibs.socialnetwork.RMICallBackClient;
 import fr.ensibs.socialnetwork.core.Profile;
 import fr.ensibs.socialnetwork.events.EventController;
 import fr.ensibs.socialnetwork.events.EventControllerFactory;
@@ -15,7 +15,7 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author Matthieu Jan
  */
-public class RMICallBackClientImpl extends UnicastRemoteObject implements RMICallBackClient {
+public class RMICallBackClientImpl extends UnicastRemoteObject implements RMICallBackClient{
 
     //Our custom eventSource to fire events
     private final CallbackEventSource eventSource;

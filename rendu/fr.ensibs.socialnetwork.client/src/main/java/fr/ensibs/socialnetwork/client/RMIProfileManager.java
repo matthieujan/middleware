@@ -1,7 +1,7 @@
 package fr.ensibs.socialnetwork.client;
 
-import fr.ensibs.socialnetwork.common.RMICallBackServer;
-import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
+import fr.ensibs.socialnetwork.ProfileManagerRemote;
+import fr.ensibs.socialnetwork.RMICallBackServer;
 import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 import fr.ensibs.socialnetwork.core.Profile;
 import fr.ensibs.socialnetwork.logic.profile.ProfileManager;
@@ -110,14 +110,14 @@ public class RMIProfileManager implements ProfileManager{
     /*
      * Private method to easily get the remote ProfileManager from the configuration file.
      */
-    private RMIProfileManagerRemote getRemoteProfileManager() throws UnknownHostException, RemoteException, NotBoundException {
+    private ProfileManagerRemote getRemoteProfileManager() throws UnknownHostException, RemoteException, NotBoundException {
         //Comm phase
         String server_host = ConfigurationManager.getInstance().getProperty("SERVER_HOST",ConfigurationManager.SERVER_HOST);
         Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT",ConfigurationManager.RMI_PORT));
 
         Registry reg = LocateRegistry.getRegistry(server_host,port);
 
-        RMIProfileManagerRemote profileManagerRemote = (RMIProfileManagerRemote) reg.lookup(ConfigurationManager.getInstance().getProperty("RMI_OBJECT",ConfigurationManager.RMI_OBJ));
+        ProfileManagerRemote profileManagerRemote = (ProfileManagerRemote) reg.lookup(ConfigurationManager.getInstance().getProperty("RMI_OBJECT",ConfigurationManager.RMI_OBJ));
         return profileManagerRemote;
     }
 
