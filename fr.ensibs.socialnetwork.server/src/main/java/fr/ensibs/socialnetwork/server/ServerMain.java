@@ -18,6 +18,9 @@ public class ServerMain {
     public static RMIProfileManagerRemoteImpl profileManager;
 
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
+
+        String server_host = ConfigurationManager.getInstance().getProperty("SERVER_HOST",ConfigurationManager.SERVER_HOST);
+        System.setProperty("java.rmi.server.hostname",server_host);
         //Binding the profile manager to the associated name and port
         Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT", ConfigurationManager.RMI_PORT));
 
