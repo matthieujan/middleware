@@ -1,7 +1,6 @@
 package fr.ensibs.socialnetwork.server;
 
 import fr.ensibs.socialnetwork.ProfileManagerRemote;
-import fr.ensibs.socialnetwork.RmiCallBack;
 import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 import fr.ensibs.socialnetwork.core.Profile;
 
@@ -9,10 +8,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.RemoteRef;
 import java.rmi.server.RemoteServer;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Implementation of the ProfileManagerRemote for the server.
@@ -20,7 +18,7 @@ import java.util.Iterator;
  *
  * @author Matthieu Jan
  */
-public class ProfileManagerRemoteImpl extends RemoteServer implements ProfileManagerRemote {
+public class ProfileManagerRemoteImpl extends UnicastRemoteObject implements ProfileManagerRemote {
 
     private HashMap<String,Profile> registered; //List the registered users by mail/profile
     private HashMap<String,String> connected; //List the connected users by token/mail
@@ -29,7 +27,8 @@ public class ProfileManagerRemoteImpl extends RemoteServer implements ProfileMan
     /**
      * Initialize the data structures
      */
-    public ProfileManagerRemoteImpl(){
+    public ProfileManagerRemoteImpl() throws RemoteException {
+        super();
         registered = new HashMap<String, Profile>();
         connected = new HashMap<String, String>();
         password = new HashMap<String, String>();
@@ -119,16 +118,11 @@ public class ProfileManagerRemoteImpl extends RemoteServer implements ProfileMan
             }else if(!oldProfile.getInterests().equals(profile.getInterests())){
                 type+=2;
             }
-            //If type==0, nothing change, so we don't modify anything
-            if(type !=0){
-                registered.put(connected.get(token),profile);
-                Iterator<String> iterator = connected.keySet().iterator();
-                while(iterator.hasNext()){
-                    String key = iterator.next();
-                    RmiCallBack cb = getCallBack(key);
-                    cb.fireEvent(type,profile);
-                }
+
+            if(type!=0){
+                ServerMain.callBackServer.doCallbacks(type,profile);
             }
+
         }
         return ret;
     }
@@ -142,19 +136,6 @@ public class ProfileManagerRemoteImpl extends RemoteServer implements ProfileMan
     public Profile getProfile(String email) throws Exception {
         return registered.get(email);
     }
-
-    /**
-     * Method to easily get a callback from token
-     * @param token the token
-     * @return the RMICallBack object
-     * @throws RemoteException
-     * @throws NotBoundException
-     */
-    public RmiCallBack getCallBack(String token) throws RemoteException, NotBoundException {
-        String server_host = ConfigurationManager.getInstance().getProperty("SERVER_HOST",ConfigurationManager.SERVER_HOST);
-        Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT",ConfigurationManager.RMI_PORT));
-        Registry reg = LocateRegistry.getRegistry(server_host,port);
-        RmiCallBack callBack = (RmiCallBack) reg.lookup(ConfigurationManager.getInstance().getProperty("RMI_OBJECT",ConfigurationManager.RMI_OBJ)+token);
-        return callBack;
-    }
 }
+
+
