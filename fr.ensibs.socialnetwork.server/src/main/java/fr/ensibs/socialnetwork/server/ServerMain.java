@@ -9,8 +9,6 @@ import java.rmi.registry.Registry;
 
 /**
  * Main class launching the server
- *
- * @author Matthieu Jan
  */
 public class ServerMain {
 

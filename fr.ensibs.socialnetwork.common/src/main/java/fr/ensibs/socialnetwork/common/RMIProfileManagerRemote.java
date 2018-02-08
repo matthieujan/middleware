@@ -7,8 +7,6 @@ import java.rmi.Remote;
 /**
  * A Remote interface to handle profile related actions.
  * More or less identical to the ProfileManager class from logic to ease understanding and manipulation.
- *
- * @author Matthieu Jan
  */
 public interface RMIProfileManagerRemote extends Remote {
 

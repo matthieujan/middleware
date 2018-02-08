@@ -9,7 +9,6 @@ import fr.ensibs.socialnetwork.logic.recommandation.RecommandationManager;
 
 /**
  * Custom CommunicationManagerFactory to create the RMIProfileManager as the only manager
- * @author Matthieu Jan
  */
 public class RMICommunicationManagerFactory implements CommunicationManagerFactory {
 

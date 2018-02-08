@@ -9,8 +9,6 @@ import java.rmi.RemoteException;
 /**
  * Remote interface to enable callback from the server, server side
  * Inspired by the University of Illinois at Chicago website examples
- *
- * @author Matthieu Jan
  */
 public interface RMICallBackServer extends Remote {
 

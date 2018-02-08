@@ -14,8 +14,6 @@ import java.util.HashMap;
 /**
  * Implementation of the ProfileManagerRemote for the server.
  * This object handle every server sided profile actions.
- *
- * @author Matthieu Jan
  */
 public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements RMIProfileManagerRemote {
 

@@ -16,8 +16,6 @@ import java.rmi.registry.Registry;
 /**
  * The RMI implementation for the client ProfileManager.
  * Mostly using the ProfileManagerRemote from the common package (mirroring it).
- *
- * @author Matthieu Jan
  */
 public class RMIProfileManager implements ProfileManager{
 

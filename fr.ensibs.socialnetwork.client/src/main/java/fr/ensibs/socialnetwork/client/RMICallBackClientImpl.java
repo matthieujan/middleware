@@ -12,8 +12,6 @@ import java.rmi.server.UnicastRemoteObject;
 
 /**
  * This class implements the callback remote object used to propagate profile modification.
- *
- * @author Matthieu Jan
  */
 public class RMICallBackClientImpl extends UnicastRemoteObject implements RMICallBackClient {
 

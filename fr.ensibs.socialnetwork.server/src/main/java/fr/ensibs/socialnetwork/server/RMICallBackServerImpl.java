@@ -11,7 +11,6 @@ import java.util.Vector;
 /**
  * This class implements the remote interface to callback the clients on profile update.
  *
- * @author Matthieu Jan
  * Inspired by M.L.Liu ServerCallback implementation
  */
 

@@ -6,7 +6,6 @@ import fr.ensibs.socialnetwork.swing.SocialNetworkFrame;
 
 /**
  * Client main class
- * @author Matthieu Jan
  */
 public class ClientMain {
 
