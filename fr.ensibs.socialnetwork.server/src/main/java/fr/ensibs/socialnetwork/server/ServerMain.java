@@ -23,9 +23,7 @@ public class ServerMain {
         System.setProperty("java.security.policy","$HOME/.java.policy");
         //Binding the profile manager to the associated name and port
         Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT", ConfigurationManager.RMI_PORT));
-        System.out.println(server_host);
-        System.out.println(port);
-        
+
         //ProfileManagerRemote
         profileManager = new RMIProfileManagerRemoteImpl();
         RMIProfileManagerRemote stub = (RMIProfileManagerRemote) UnicastRemoteObject.exportObject(profileManager, 0);

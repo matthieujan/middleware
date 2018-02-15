@@ -97,11 +97,8 @@ public class RMIProfileManagerRemoteImpl extends RemoteServer implements RMIProf
      */
     public boolean updateProfile(String token, Profile profile) throws Exception {
         boolean ret = false;
-        System.out.println("Test1");
         //If the token exist AND if the "token's" email match the profile email
         if (connected.containsKey(token) && profile.getEmail().equals(connected.get(token))) {
-			System.out.println("Test2");
-
             ret = true;
 
             Profile oldProfile = registered.get(profile.getEmail());
@@ -114,9 +111,7 @@ public class RMIProfileManagerRemoteImpl extends RemoteServer implements RMIProf
 
             if (type != 0) {
                 for(String key : callback.keySet()){
-					System.out.println("Test3");
                     callback.get(key).fireEvent(type,profile);
-                    System.out.println("Test4");
 
                 }
             }

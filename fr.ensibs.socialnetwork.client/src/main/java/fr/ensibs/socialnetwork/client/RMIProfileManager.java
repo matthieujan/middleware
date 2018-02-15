@@ -104,7 +104,6 @@ public class RMIProfileManager implements ProfileManager{
         //Comm phase
         String server_host = ConfigurationManager.getInstance().getProperty("SERVER_HOST",ConfigurationManager.SERVER_HOST);
         Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT",ConfigurationManager.RMI_PORT));
-		System.out.println(server_host+" "+port);
         Registry reg = LocateRegistry.getRegistry(server_host,port);
 
         RMIProfileManagerRemote profileManagerRemote = (RMIProfileManagerRemote) reg.lookup(ConfigurationManager.getInstance().getProperty("RMI_OBJECT",ConfigurationManager.RMI_OBJ));
