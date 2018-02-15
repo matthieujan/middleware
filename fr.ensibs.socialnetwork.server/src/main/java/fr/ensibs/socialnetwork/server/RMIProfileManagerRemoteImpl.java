@@ -1,13 +1,10 @@
 package fr.ensibs.socialnetwork.server;
 
+import fr.ensibs.socialnetwork.common.RMICallback;
 import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
-import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 import fr.ensibs.socialnetwork.core.Profile;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
@@ -20,6 +17,7 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
     private HashMap<String, Profile> registered; //List the registered users by mail/profile
     private HashMap<String, String> connected; //List the connected users by token/mail
     private HashMap<String, String> password; //List the user's password by email/password
+    private HashMap<String, RMICallback> callback; //List the user's password by email/password
 
     /**
      * Initialize the data structures
@@ -29,6 +27,7 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
         registered = new HashMap<String, Profile>();
         connected = new HashMap<String, String>();
         password = new HashMap<String, String>();
+        callback = new HashMap<String, RMICallback>();
     }
 
     /**
@@ -58,7 +57,7 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
      * @return user's session token, or null if it didn't worked
      * @throws Exception
      */
-    public String logIn(String email, String password) {
+    public String logIn(String email, String password, RMICallback cb) {
         String token = null;
         if (registered.containsKey(email) && password.equals(this.password.get(email))) {
             token = "RandomToken" + (Math.random() * 1000); //Basic random token
@@ -66,6 +65,7 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
                 token = "RandomToken" + (Math.random() * 1000);
             }
             connected.put(token, email);
+            callback.put(token,cb);
         }
         return token;
     }
@@ -80,20 +80,9 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
     public boolean logOut(String token) {
         boolean ret = false;
         if (connected.containsKey(token)) {
-            try {
                 ret = true;
                 connected.remove(token);
-                //Unbinding the callback
-                Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT", ConfigurationManager.RMI_PORT));
-                Registry reg = LocateRegistry.getRegistry(port);
-                reg.unbind(ConfigurationManager.getInstance().getProperty("RMI_OBJECT", ConfigurationManager.RMI_OBJ) + token);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                ret = false;
-            } catch (NotBoundException e) {
-                e.printStackTrace();
-                ret = false;
-            }
+                callback.remove(token);
         }
         return ret;
     }
@@ -121,7 +110,9 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
             }
 
             if (type != 0) {
-                ServerMain.callBackServer.doCallbacks(type, profile);
+                for(String key : callback.keySet()){
+                    callback.get(key).fireEvent(type,profile);
+                }
             }
 
         }

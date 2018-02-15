@@ -27,7 +27,7 @@ public interface RMIProfileManagerRemote extends Remote {
      * @return the session token
      * @throws Exception
      */
-    public String logIn(String email, String password) throws Exception;
+    public String logIn(String email, String password, RMICallback callback) throws Exception;
 
     /**
      * Log out an user from the server, and revoke the session token
