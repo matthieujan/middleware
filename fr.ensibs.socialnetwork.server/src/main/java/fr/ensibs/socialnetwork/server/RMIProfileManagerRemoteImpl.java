@@ -5,14 +5,14 @@ import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
 import fr.ensibs.socialnetwork.core.Profile;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
+import java.rmi.server.RemoteServer;
 import java.util.HashMap;
 
 /**
  * Implementation of the ProfileManagerRemote for the server.
  * This object handle every server sided profile actions.
  */
-public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements RMIProfileManagerRemote {
+public class RMIProfileManagerRemoteImpl extends RemoteServer implements RMIProfileManagerRemote {
 
     private HashMap<String, Profile> registered; //List the registered users by mail/profile
     private HashMap<String, String> connected; //List the connected users by token/mail
@@ -97,8 +97,11 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
      */
     public boolean updateProfile(String token, Profile profile) throws Exception {
         boolean ret = false;
+        System.out.println("Test1");
         //If the token exist AND if the "token's" email match the profile email
         if (connected.containsKey(token) && profile.getEmail().equals(connected.get(token))) {
+			System.out.println("Test2");
+
             ret = true;
 
             Profile oldProfile = registered.get(profile.getEmail());
@@ -111,7 +114,10 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
 
             if (type != 0) {
                 for(String key : callback.keySet()){
+					System.out.println("Test3");
                     callback.get(key).fireEvent(type,profile);
+                    System.out.println("Test4");
+
                 }
             }
 
