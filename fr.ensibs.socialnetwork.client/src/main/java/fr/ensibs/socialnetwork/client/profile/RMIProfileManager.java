@@ -1,5 +1,6 @@
-package fr.ensibs.socialnetwork.client;
+package fr.ensibs.socialnetwork.client.profile;
 
+import fr.ensibs.socialnetwork.client.OpenJmsTalker;
 import fr.ensibs.socialnetwork.common.RMICallback;
 import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
 import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
@@ -43,6 +44,7 @@ public class RMIProfileManager implements ProfileManager{
         //Use the remote methode
         RMICallback cb = new RMICallbackImpl();
         String token = getRemoteProfileManager().logIn(email, password,cb);
+        OpenJmsTalker.getInstance().login(email,password);
         return token;
     }
 
@@ -57,6 +59,7 @@ public class RMIProfileManager implements ProfileManager{
         try {
             //Use the remote method
             ret = getRemoteProfileManager().logOut(token);
+            OpenJmsTalker.getInstance().logout();
         }catch (Exception e){
             e.printStackTrace();
             ret = false;
@@ -102,11 +105,11 @@ public class RMIProfileManager implements ProfileManager{
      */
     private RMIProfileManagerRemote getRemoteProfileManager() throws UnknownHostException, RemoteException, NotBoundException {
         //Comm phase
-        String server_host = ConfigurationManager.getInstance().getProperty("SERVER_HOST",ConfigurationManager.SERVER_HOST);
-        Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT",ConfigurationManager.RMI_PORT));
+        String server_host = ConfigurationManager.getInstance().getProperty(ConfigurationManager.SERVER_HOST,"localhost");
+        Integer port = ConfigurationManager.getInstance().getIntegerProperty(ConfigurationManager.RMI_PORT,5000);
         Registry reg = LocateRegistry.getRegistry(server_host,port);
 
-        RMIProfileManagerRemote profileManagerRemote = (RMIProfileManagerRemote) reg.lookup(ConfigurationManager.getInstance().getProperty("RMI_OBJECT",ConfigurationManager.RMI_OBJ));
+        RMIProfileManagerRemote profileManagerRemote = (RMIProfileManagerRemote) reg.lookup(ConfigurationManager.getInstance().getProperty(ConfigurationManager.RMI_OBJ,"RMI_OBJ"));
         return profileManagerRemote;
     }
 }

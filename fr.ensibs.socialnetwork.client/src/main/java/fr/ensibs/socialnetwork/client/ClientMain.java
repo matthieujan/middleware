@@ -16,8 +16,7 @@ public class ClientMain {
     public static void main(String[] args){
 
         //We use a custom CommunicationManagerFactory, only handling RMI for profile interaction at the moment.
-        CommunicationManagerFactory cmf = new RMICommunicationManagerFactory();
-
+        CommunicationManagerFactory cmf = new CustomCommunicationManagerFactory();
         //Creating the socialNetwork object and launching the GUI
         SocialNetwork socialNetwork = new SocialNetwork(cmf);
         SocialNetworkFrame frame = new SocialNetworkFrame(socialNetwork);

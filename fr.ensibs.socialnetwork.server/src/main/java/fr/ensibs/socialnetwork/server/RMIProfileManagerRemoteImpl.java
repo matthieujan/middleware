@@ -2,8 +2,10 @@ package fr.ensibs.socialnetwork.server;
 
 import fr.ensibs.socialnetwork.common.RMICallback;
 import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
+import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 import fr.ensibs.socialnetwork.core.Profile;
-
+import org.exolab.jms.administration.AdminConnectionFactory;
+import org.exolab.jms.administration.JmsAdminServerIfc;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.util.HashMap;
@@ -45,6 +47,37 @@ public class RMIProfileManagerRemoteImpl extends RemoteServer implements RMIProf
             ret = new Profile(email, pseudo);
             this.registered.put(email, ret); //Adding the new profile to the map
             this.password.put(email, password); //Adding the new password to the map
+            if(!createJmsUser(email,password)){
+                System.out.println("Jms Failed, transaction reseted");
+                this.registered.remove(email);
+                this.password.remove(email);
+                ret = null;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Custom method to create the user environement on the jms server
+     * @param email
+     * @param password
+     * @return
+     */
+    private boolean createJmsUser(String email, String password) {
+        boolean ret = true;
+        try {
+            String server_host = ConfigurationManager.getInstance().getProperty(ConfigurationManager.SERVER_HOST,"localhost");
+            int jms_port = ConfigurationManager.getInstance().getIntegerProperty(ConfigurationManager.JMS_PORT,5001);
+            String url = "tcp://"+server_host+":"+jms_port+"/";
+            JmsAdminServerIfc admin = AdminConnectionFactory.create(url);
+            admin.addUser(email,password);
+            admin.addDestination(email+"priv",true);
+            admin.addDestination(email+"pub",false);
+            admin.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            ret = false;
         }
         return ret;
     }

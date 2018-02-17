@@ -1,4 +1,4 @@
-package fr.ensibs.socialnetwork.client;
+package fr.ensibs.socialnetwork.client.profile;
 
 import fr.ensibs.socialnetwork.common.RMICallback;
 import fr.ensibs.socialnetwork.core.Profile;

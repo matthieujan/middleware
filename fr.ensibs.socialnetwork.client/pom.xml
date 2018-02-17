@@ -18,6 +18,11 @@
             <artifactId>socialnetwork.swing</artifactId>
             <version>1.0</version>
         </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>openjms</artifactId>
+                <version>1.0</version>
+            </dependency>
     </dependencies>
 
     <build>
