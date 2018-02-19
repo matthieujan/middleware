@@ -126,7 +126,6 @@ public class OpenJmsTalker{
 
     private static void handleMessage(Message message) throws JMSException, NamingException {
         int type = message.getIntProperty(JmsType.MESSAGE_TYPE);
-        System.out.println("Message reçu : type = "+type+" message = "+message.getStringProperty(JmsType.CONTENT));
         String source;
         String target;
         long date;

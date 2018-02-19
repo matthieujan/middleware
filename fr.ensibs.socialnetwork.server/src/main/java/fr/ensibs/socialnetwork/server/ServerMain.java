@@ -50,7 +50,6 @@ public class ServerMain {
     private static void start() throws RemoteException, AlreadyBoundException {
         startRmi();
         startJms();
-        System.out.println("Test1");
     }
 
     private static void startRmi() throws AlreadyBoundException, RemoteException {

@@ -43,7 +43,6 @@ public class JmsMessageManager implements MessageManager {
         OpenJmsTalker server = OpenJmsTalker.getInstance();
         MessageConsumer c = server.getSession().createConsumer(server.getDestination(source+"pub"));
         server.addSubscribe(source,c);
-
     }
 
     public void unsubscribe(String subscriber, String source) throws Exception {

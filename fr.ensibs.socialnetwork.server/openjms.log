@@ -109,3 +109,57 @@
 11:01:39.744 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
 11:01:39.745 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
 11:01:39.745 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+11:55:53.624 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+11:55:53.625 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+11:55:53.627 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+11:56:03.648 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+11:56:03.649 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+11:56:03.650 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+08:43:08.004 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+08:43:08.006 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+08:43:08.007 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+08:43:08.029 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+08:43:08.030 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+08:43:08.030 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+08:48:52.052 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+08:48:52.054 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+08:48:52.056 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+08:48:52.068 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+08:48:52.068 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+08:48:52.069 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+08:49:54.706 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+08:49:54.708 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+08:49:54.709 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+08:49:54.723 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+08:49:54.724 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+08:49:54.724 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+08:50:46.798 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+08:50:46.800 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+08:50:46.801 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+08:50:46.813 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+08:50:46.813 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+08:50:46.813 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+09:06:28.728 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+09:06:28.729 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+09:06:28.731 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+09:06:28.743 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+09:06:28.743 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+09:06:28.743 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+09:17:55.463 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+09:17:55.464 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+09:17:55.466 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+09:17:55.487 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+09:17:55.488 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+09:17:55.489 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+09:19:52.048 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+09:19:52.050 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+09:19:52.051 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+09:19:52.063 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+09:19:52.064 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+09:19:52.064 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/
+09:22:20.069 INFO  [Thread-1] - Server accepting connections on tcp://ares:5001/
+09:22:20.071 INFO  [Thread-1] - JNDI service accepting connections on tcp://ares:5001/
+09:22:20.072 INFO  [Thread-1] - Admin service accepting connections on tcp://ares:5001/
+09:22:20.089 INFO  [Thread-1] - Server accepting connections on rmi://ares:1099/
+09:22:20.089 INFO  [Thread-1] - JNDI service accepting connections on rmi://ares:1099/
+09:22:20.090 INFO  [Thread-1] - Admin service accepting connections on rmi://ares:1099/

@@ -6,9 +6,16 @@ import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 import fr.ensibs.socialnetwork.core.Profile;
 import org.exolab.jms.administration.AdminConnectionFactory;
 import org.exolab.jms.administration.JmsAdminServerIfc;
+
+import javax.jms.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * Implementation of the ProfileManagerRemote for the server.
@@ -66,14 +73,40 @@ public class RMIProfileManagerRemoteImpl extends RemoteServer implements RMIProf
     private boolean createJmsUser(String email, String password) {
         boolean ret = true;
         try {
+            //TODO Correct the dot in mail problem
             String server_host = ConfigurationManager.getInstance().getProperty(ConfigurationManager.SERVER_HOST,"localhost");
             int jms_port = ConfigurationManager.getInstance().getIntegerProperty(ConfigurationManager.JMS_PORT,5001);
             String url = "tcp://"+server_host+":"+jms_port+"/";
-            JmsAdminServerIfc admin = AdminConnectionFactory.create(url);
+
+        Hashtable properties = new Hashtable();
+        properties.put(Context.INITIAL_CONTEXT_FACTORY, "org.exolab.jms.jndi.InitialContextFactory");
+        properties.put(Context.PROVIDER_URL, "tcp://"+server_host+":"+jms_port+"/");
+        Context context = new InitialContext(properties);
+        ConnectionFactory cf = (ConnectionFactory) context.lookup("ConnectionFactory");
+        Connection connection = cf.createConnection();
+        Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+
+        String pub = email+"pub";
+        String priv = email+"priv";
+        try{
+                Destination destination = (Destination) context.lookup(pub);
+        }catch (NameNotFoundException e){
+            Topic topic = session.createTopic(pub);
+            context.bind(pub,topic);
+        }
+
+        try{
+                Destination destination = (Destination) context.lookup(priv);
+        }catch (NameNotFoundException e){
+            Queue queue = session.createQueue(priv);
+            context.bind(priv,queue);
+        }
+
+            /*JmsAdminServerIfc admin = AdminConnectionFactory.create(url);
             admin.addUser(email,password);
             admin.addDestination(email+"priv",true);
             admin.addDestination(email+"pub",false);
-            admin.close();
+            admin.close();*/
 
         }catch (Exception e){
             e.printStackTrace();
