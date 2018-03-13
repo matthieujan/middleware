@@ -1,6 +1,7 @@
-package fr.ensibs.socialnetwork.client;
+package fr.ensibs.socialnetwork.client.profile;
 
-import fr.ensibs.socialnetwork.common.RMICallBackServer;
+import fr.ensibs.socialnetwork.client.OpenJmsTalker;
+import fr.ensibs.socialnetwork.common.RMICallback;
 import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
 import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 import fr.ensibs.socialnetwork.core.Profile;
@@ -18,8 +19,6 @@ import java.rmi.registry.Registry;
  * Mostly using the ProfileManagerRemote from the common package (mirroring it).
  */
 public class RMIProfileManager implements ProfileManager{
-
-    private RMICallBackClientImpl callBackClient;
 
     /**
      * Sign up the user to the server
@@ -43,12 +42,9 @@ public class RMIProfileManager implements ProfileManager{
      */
     public String logIn(String email, String password) throws Exception {
         //Use the remote methode
-        String token = getRemoteProfileManager().logIn(email, password);
-        //If it worked, bind the call to the server
-        if(token != null){
-            this.callBackClient = new RMICallBackClientImpl();
-            getRemoteCallback().registerForCallback(callBackClient);
-        }
+        RMICallback cb = new RMICallbackImpl();
+        String token = getRemoteProfileManager().logIn(email, password,cb);
+        OpenJmsTalker.getInstance().login(email,password);
         return token;
     }
 
@@ -63,8 +59,7 @@ public class RMIProfileManager implements ProfileManager{
         try {
             //Use the remote method
             ret = getRemoteProfileManager().logOut(token);
-            this.getRemoteCallback().unregisterForCallback(callBackClient);
-            callBackClient=null;
+            OpenJmsTalker.getInstance().logout();
         }catch (Exception e){
             e.printStackTrace();
             ret = false;
@@ -110,28 +105,11 @@ public class RMIProfileManager implements ProfileManager{
      */
     private RMIProfileManagerRemote getRemoteProfileManager() throws UnknownHostException, RemoteException, NotBoundException {
         //Comm phase
-        String server_host = ConfigurationManager.getInstance().getProperty("SERVER_HOST",ConfigurationManager.SERVER_HOST);
-        System.setProperty("java.rmi.server.hostname",server_host);
-        Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT",ConfigurationManager.RMI_PORT));
-
+        String server_host = ConfigurationManager.getInstance().getProperty(ConfigurationManager.SERVER_HOST,"localhost");
+        Integer port = ConfigurationManager.getInstance().getIntegerProperty(ConfigurationManager.RMI_PORT,5000);
         Registry reg = LocateRegistry.getRegistry(server_host,port);
 
-        RMIProfileManagerRemote profileManagerRemote = (RMIProfileManagerRemote) reg.lookup(ConfigurationManager.getInstance().getProperty("RMI_OBJECT",ConfigurationManager.RMI_OBJ));
+        RMIProfileManagerRemote profileManagerRemote = (RMIProfileManagerRemote) reg.lookup(ConfigurationManager.getInstance().getProperty(ConfigurationManager.RMI_OBJ,"RMI_OBJ"));
         return profileManagerRemote;
-    }
-
-    /*
-     * Private method to easily get the remote Callback manager from the configuration file with a tweak.
-     */
-    private RMICallBackServer getRemoteCallback() throws UnknownHostException, RemoteException, NotBoundException {
-        //Comm phase
-        String server_host = ConfigurationManager.getInstance().getProperty("SERVER_HOST",ConfigurationManager.SERVER_HOST);
-        System.setProperty("java.rmi.server.hostname",server_host);
-        Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT",ConfigurationManager.RMI_PORT));
-
-        Registry reg = LocateRegistry.getRegistry(server_host,port);
-
-        RMICallBackServer ret = (RMICallBackServer) reg.lookup(ConfigurationManager.getInstance().getProperty("RMI_OBJECT",ConfigurationManager.RMI_OBJ)+"Callback");
-        return ret;
     }
 }

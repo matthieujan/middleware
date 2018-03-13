@@ -2,9 +2,6 @@
 
 Matthieu Jan - Info2
 
-Félix Bezançon - Info2
-
-
 # OpenJMS
 ## Présentation générale
 L'application d'OpenJMS au projet Socialnetwork pour gérer les demandes d'amis et l'envoi / publication de message se compose de :

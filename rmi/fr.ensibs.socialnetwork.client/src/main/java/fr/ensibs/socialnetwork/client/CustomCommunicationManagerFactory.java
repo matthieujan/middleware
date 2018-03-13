@@ -1,5 +1,8 @@
 package fr.ensibs.socialnetwork.client;
 
+import fr.ensibs.socialnetwork.client.friend.JmsFriendManager;
+import fr.ensibs.socialnetwork.client.message.JmsMessageManager;
+import fr.ensibs.socialnetwork.client.profile.RMIProfileManager;
 import fr.ensibs.socialnetwork.logic.CommunicationManagerFactory;
 import fr.ensibs.socialnetwork.logic.friend.FriendManager;
 import fr.ensibs.socialnetwork.logic.image.ImageManager;
@@ -10,7 +13,7 @@ import fr.ensibs.socialnetwork.logic.recommandation.RecommandationManager;
 /**
  * Custom CommunicationManagerFactory to create the RMIProfileManager as the only manager
  */
-public class RMICommunicationManagerFactory implements CommunicationManagerFactory {
+public class CustomCommunicationManagerFactory implements CommunicationManagerFactory {
 
     /**
      * ProfileManager maker
@@ -21,11 +24,11 @@ public class RMICommunicationManagerFactory implements CommunicationManagerFacto
     }
 
     public FriendManager makeFriendManager() {
-        return null;
+        return new JmsFriendManager();
     }
 
     public MessageManager makeMessageManager() {
-        return null;
+        return new JmsMessageManager();
     }
 
     public ImageManager makeImageManager() {

@@ -1,25 +1,32 @@
 package fr.ensibs.socialnetwork.server;
 
+import fr.ensibs.socialnetwork.common.RMICallback;
 import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
 import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 import fr.ensibs.socialnetwork.core.Profile;
+import org.exolab.jms.administration.AdminConnectionFactory;
+import org.exolab.jms.administration.JmsAdminServerIfc;
 
-import java.rmi.NotBoundException;
+import javax.jms.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
+import java.rmi.server.RemoteServer;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * Implementation of the ProfileManagerRemote for the server.
  * This object handle every server sided profile actions.
  */
-public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements RMIProfileManagerRemote {
+public class RMIProfileManagerRemoteImpl extends RemoteServer implements RMIProfileManagerRemote {
 
     private HashMap<String, Profile> registered; //List the registered users by mail/profile
     private HashMap<String, String> connected; //List the connected users by token/mail
     private HashMap<String, String> password; //List the user's password by email/password
+    private HashMap<String, RMICallback> callback; //List the user's password by email/password
 
     /**
      * Initialize the data structures
@@ -29,6 +36,7 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
         registered = new HashMap<String, Profile>();
         connected = new HashMap<String, String>();
         password = new HashMap<String, String>();
+        callback = new HashMap<String, RMICallback>();
     }
 
     /**
@@ -46,6 +54,63 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
             ret = new Profile(email, pseudo);
             this.registered.put(email, ret); //Adding the new profile to the map
             this.password.put(email, password); //Adding the new password to the map
+            if(!createJmsUser(email,password)){
+                System.out.println("Jms Failed, transaction reseted");
+                this.registered.remove(email);
+                this.password.remove(email);
+                ret = null;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Custom method to create the user environement on the jms server
+     * @param email
+     * @param password
+     * @return
+     */
+    private boolean createJmsUser(String email, String password) {
+        boolean ret = true;
+        try {
+            //TODO Correct the dot in mail problem
+            String server_host = ConfigurationManager.getInstance().getProperty(ConfigurationManager.SERVER_HOST,"localhost");
+            int jms_port = ConfigurationManager.getInstance().getIntegerProperty(ConfigurationManager.JMS_PORT,5001);
+            String url = "tcp://"+server_host+":"+jms_port+"/";
+
+        Hashtable properties = new Hashtable();
+        properties.put(Context.INITIAL_CONTEXT_FACTORY, "org.exolab.jms.jndi.InitialContextFactory");
+        properties.put(Context.PROVIDER_URL, "tcp://"+server_host+":"+jms_port+"/");
+        Context context = new InitialContext(properties);
+        ConnectionFactory cf = (ConnectionFactory) context.lookup("ConnectionFactory");
+        Connection connection = cf.createConnection();
+        Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+
+        String pub = email+"pub";
+        String priv = email+"priv";
+        try{
+                Destination destination = (Destination) context.lookup(pub);
+        }catch (NameNotFoundException e){
+            Topic topic = session.createTopic(pub);
+            context.bind(pub,topic);
+        }
+
+        try{
+                Destination destination = (Destination) context.lookup(priv);
+        }catch (NameNotFoundException e){
+            Queue queue = session.createQueue(priv);
+            context.bind(priv,queue);
+        }
+
+            /*JmsAdminServerIfc admin = AdminConnectionFactory.create(url);
+            admin.addUser(email,password);
+            admin.addDestination(email+"priv",true);
+            admin.addDestination(email+"pub",false);
+            admin.close();*/
+
+        }catch (Exception e){
+            e.printStackTrace();
+            ret = false;
         }
         return ret;
     }
@@ -58,7 +123,7 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
      * @return user's session token, or null if it didn't worked
      * @throws Exception
      */
-    public String logIn(String email, String password) {
+    public String logIn(String email, String password, RMICallback cb) {
         String token = null;
         if (registered.containsKey(email) && password.equals(this.password.get(email))) {
             token = "RandomToken" + (Math.random() * 1000); //Basic random token
@@ -66,6 +131,7 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
                 token = "RandomToken" + (Math.random() * 1000);
             }
             connected.put(token, email);
+            callback.put(token,cb);
         }
         return token;
     }
@@ -80,20 +146,9 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
     public boolean logOut(String token) {
         boolean ret = false;
         if (connected.containsKey(token)) {
-            try {
                 ret = true;
                 connected.remove(token);
-                //Unbinding the callback
-                Integer port = Integer.parseInt(ConfigurationManager.getInstance().getProperty("RMI_PORT", ConfigurationManager.RMI_PORT));
-                Registry reg = LocateRegistry.getRegistry(port);
-                reg.unbind(ConfigurationManager.getInstance().getProperty("RMI_OBJECT", ConfigurationManager.RMI_OBJ) + token);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                ret = false;
-            } catch (NotBoundException e) {
-                e.printStackTrace();
-                ret = false;
-            }
+                callback.remove(token);
         }
         return ret;
     }
@@ -121,7 +176,10 @@ public class RMIProfileManagerRemoteImpl extends UnicastRemoteObject implements 
             }
 
             if (type != 0) {
-                ServerMain.callBackServer.doCallbacks(type, profile);
+                for(String key : callback.keySet()){
+                    callback.get(key).fireEvent(type,profile);
+
+                }
             }
 
         }
