@@ -1,5 +1,6 @@
 package fr.ensibs.socialnetwork.server;
 
+import fr.ensibs.axis2.Axis2;
 import fr.ensibs.openjms.OpenJms;
 import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
 import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
@@ -27,6 +28,10 @@ public class ServerMain {
     private static int jms_port;
     private static String jms_home;
     private static OpenJms openJmsServer;
+    private static int axis_port;
+    private static String axis_home;
+    private static String axis_service;
+    private static Axis2 axisServer;
 
 
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
@@ -50,6 +55,7 @@ public class ServerMain {
     private static void start() throws RemoteException, AlreadyBoundException {
         startRmi();
         startJms();
+        startAxis();
     }
 
     private static void startRmi() throws AlreadyBoundException, RemoteException {
@@ -71,9 +77,18 @@ public class ServerMain {
         openJmsServer.start();
     }
 
+    private static void startAxis(){
+        axis_port = conf.getIntegerProperty(ConfigurationManager.AXIS2_PORT,5002);
+        axis_home = ConfigurationManager.getInstance().getProperty(ConfigurationManager.AXIS2_HOME,"/tmp/axis2-1.7.7");
+        axis_service = ConfigurationManager.getInstance().getProperty(ConfigurationManager.AXIS2_SERVICE,"target/ImageService.aar");
+        axisServer = new Axis2(server_host,axis_port,axis_home,axis_service);
+        axisServer.start();
+    }
+
     private static void stop(){
         stopRmi();
         stopJms();
+        stopAxis();
     }
 
     private static void stopRmi(){
@@ -84,6 +99,9 @@ public class ServerMain {
         openJmsServer.stop();
     }
 
+    private static void stopAxis(){
+        //Des trucs
+    }
 
     public static OpenJms getOpenJmsServer(){
         return openJmsServer;

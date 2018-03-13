@@ -6,12 +6,12 @@
 
     <groupId>fr.ensibs</groupId>
     <artifactId>socialnetwork.client</artifactId>
-    <version>2</version>
+    <version>3</version>
     <dependencies>
         <dependency>
             <groupId>fr.ensibs</groupId>
             <artifactId>socialnetwork.common</artifactId>
-            <version>1.0</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>fr.ensibs</groupId>
@@ -21,6 +21,11 @@
             <dependency>
                 <groupId>fr.ensibs</groupId>
                 <artifactId>openjms</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>axis2</artifactId>
                 <version>1.0</version>
             </dependency>
     </dependencies>
@@ -53,6 +58,14 @@
                             <mainClass>fr.ensibs.socialnetwork.client.ClientMain</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
