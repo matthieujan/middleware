@@ -1,10 +1,9 @@
 package fr.ensibs.socialnetwork.client;
 
-import fr.ensibs.socialnetwork.client.image.AxisImageManager;
+import fr.ensibs.socialnetwork.client.fr.ensibs.socialnetwork.client.image.AxisImageManager;
 import fr.ensibs.socialnetwork.client.friend.JmsFriendManager;
 import fr.ensibs.socialnetwork.client.message.JmsMessageManager;
 import fr.ensibs.socialnetwork.client.profile.RMIProfileManager;
-import fr.ensibs.socialnetwork.client.recommandation.JSRecommandationManager;
 import fr.ensibs.socialnetwork.logic.CommunicationManagerFactory;
 import fr.ensibs.socialnetwork.logic.friend.FriendManager;
 import fr.ensibs.socialnetwork.logic.image.ImageManager;
@@ -38,6 +37,6 @@ public class CustomCommunicationManagerFactory implements CommunicationManagerFa
     }
 
     public RecommandationManager makeRecommandationManager() {
-        return new JSRecommandationManager();
+        return null;
     }
 }

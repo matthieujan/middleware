@@ -5,30 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.ensibs</groupId>
-    <artifactId>socialnetwork.server</artifactId>
-    <version>4</version>
-
+    <artifactId>socialnetwork.client</artifactId>
+    <version>3</version>
     <dependencies>
         <dependency>
             <groupId>fr.ensibs</groupId>
             <artifactId>socialnetwork.common</artifactId>
-            <version>4.0</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>fr.ensibs</groupId>
-            <artifactId>openjms</artifactId>
+            <artifactId>socialnetwork.swing</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>fr.ensibs</groupId>
-            <artifactId>axis2</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.ensibs</groupId>
-            <artifactId>river</artifactId>
-            <version>1.0</version>
-        </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>openjms</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>axis2</artifactId>
+                <version>1.0</version>
+            </dependency>
     </dependencies>
 
     <build>
@@ -56,31 +55,20 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>fr.ensibs.socialnetwork.server.ServerMain</mainClass>
+                            <mainClass>fr.ensibs.socialnetwork.client.ClientMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
-            <plugin> <!-- generate aar -->
-                <groupId>org.apache.axis2</groupId>
-                <artifactId>axis2-aar-maven-plugin</artifactId>
-                <version>1.7.7</version>
-                <extensions>true</extensions>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <includeDependencies>false</includeDependencies>
-                    <aarName>ImageService</aarName>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>aar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-
 
 </project>

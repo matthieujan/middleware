@@ -2,7 +2,6 @@ package fr.ensibs.socialnetwork.server;
 
 import fr.ensibs.axis2.Axis2;
 import fr.ensibs.openjms.OpenJms;
-import fr.ensibs.river.River;
 import fr.ensibs.socialnetwork.common.RMIProfileManagerRemote;
 import fr.ensibs.socialnetwork.configuration.ConfigurationManager;
 
@@ -29,14 +28,10 @@ public class ServerMain {
     private static int jms_port;
     private static String jms_home;
     private static OpenJms openJmsServer;
-
     private static int axis_port;
     private static String axis_home;
     private static String axis_service;
     private static Axis2 axisServer;
-
-    private static int river_port;
-    private static River riverServer;
 
 
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
@@ -61,7 +56,6 @@ public class ServerMain {
         startRmi();
         startJms();
         startAxis();
-        startRiver();
     }
 
     private static void startRmi() throws AlreadyBoundException, RemoteException {
@@ -78,30 +72,23 @@ public class ServerMain {
 
     private static void startJms(){
         jms_port = conf.getIntegerProperty(ConfigurationManager.JMS_PORT,5001);
-        jms_home = conf.getProperty(ConfigurationManager.JMS_HOME,"/tmp/openjms-0-7.7-beta-1");
+        jms_home = ConfigurationManager.getInstance().getProperty(ConfigurationManager.JMS_HOME,"/tmp/openjms-0-7.7-beta-1");
         openJmsServer = new OpenJms(server_host,jms_port,jms_home);
         openJmsServer.start();
     }
 
     private static void startAxis(){
         axis_port = conf.getIntegerProperty(ConfigurationManager.AXIS2_PORT,5002);
-        axis_home = conf.getProperty(ConfigurationManager.AXIS2_HOME,"/tmp/axis2-1.7.7");
-        axis_service = conf.getProperty(ConfigurationManager.AXIS2_SERVICE,"target/ImageService.aar");
+        axis_home = ConfigurationManager.getInstance().getProperty(ConfigurationManager.AXIS2_HOME,"/tmp/axis2-1.7.7");
+        axis_service = ConfigurationManager.getInstance().getProperty(ConfigurationManager.AXIS2_SERVICE,"target/ImageService.aar");
         axisServer = new Axis2(server_host,axis_port,axis_home,axis_service);
         axisServer.start();
-    }
-
-    private static void startRiver() {
-        river_port = conf.getIntegerProperty(ConfigurationManager.RIVER_PORT,5003);
-        riverServer = new River(server_host,river_port);
-        riverServer.start();
     }
 
     private static void stop(){
         stopRmi();
         stopJms();
         stopAxis();
-        stopRiver();
     }
 
     private static void stopRmi(){
@@ -113,10 +100,6 @@ public class ServerMain {
     }
 
     private static void stopAxis(){
-        //Des trucs
-    }
-
-    private static void stopRiver(){
         //Des trucs
     }
 

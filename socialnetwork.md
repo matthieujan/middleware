@@ -2,6 +2,21 @@
 
 Matthieu Jan - Info2
 
+# Axis2
+## Présentation générale
+L'application d'Axis2 au projet Socialnetwork pour gérer le stockage et la récuperation se compose de :
+- La réalisation d'un ImageManager côté client
+- La réalisation d'un ImageService côté serveur.
+
+De plus quelques adaptations légères ont été faites pour intégrer Axis2 :
+- Rajout d'une méthode startAxis() dans ServerMain
+- Ajout de l'objet ImageManager dans le CommunicationFactory
+
+## Fonctionnement
+- Lorsqu'un utilisateur ajoute une photo dans une publication, celle ci est transformé en bytes (via ImageIO et ByteArrayOutputStream), puis encodé en base 64 et finalement transmise à l'ImageService
+- Lorsque le service reçoit une image, il la stocke dans une table lié à un token, qu'il renvoit à l'utilisateur.
+- Lorsqu'un utilisateur reçoit une publication avec photo, il fait appel au service avec le token fourni, et le service lui renvoi la chaine en base 64, qu'il décode et affiche.
+
 # OpenJMS
 ## Présentation générale
 L'application d'OpenJMS au projet Socialnetwork pour gérer les demandes d'amis et l'envoi / publication de message se compose de :

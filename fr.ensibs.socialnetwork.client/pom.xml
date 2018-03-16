@@ -6,12 +6,12 @@
 
     <groupId>fr.ensibs</groupId>
     <artifactId>socialnetwork.client</artifactId>
-    <version>3</version>
+    <version>4</version>
     <dependencies>
         <dependency>
             <groupId>fr.ensibs</groupId>
             <artifactId>socialnetwork.common</artifactId>
-            <version>3.0</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>fr.ensibs</groupId>
@@ -26,6 +26,11 @@
             <dependency>
                 <groupId>fr.ensibs</groupId>
                 <artifactId>axis2</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>river</artifactId>
                 <version>1.0</version>
             </dependency>
     </dependencies>

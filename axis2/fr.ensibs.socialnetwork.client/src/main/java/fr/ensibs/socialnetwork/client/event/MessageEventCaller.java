@@ -5,6 +5,7 @@ import fr.ensibs.socialnetwork.logic.message.MessageEvent;
 
 public class MessageEventCaller extends EventSource<MessageEvent>{
     public void fire(MessageEvent event){
+        System.out.println(event);
         this.fireEvent(event);
     }
 }
