@@ -2,6 +2,32 @@
 
 Matthieu Jan - Info2
 
+# River
+## Présentation générale
+L'application de River Javaspaces au projet Socialnetwork pour gérer les recommendations se compose de :
+- La réalisation d'un RiverTalker (à l'image de OpenJmsTalker) pour faciliter l'ecriture de certaines transactions
+- La réalisation d'un JSRecommandationManager répondant à l'interface RecommandationManager
+- Une classe ListEntry symbolisant nos entrées
+
+De plus, quelques adapations ont été faites pour intégrer River :
+- Rajout d'une méthode startRiver dans ServerMain
+- Ajout de l'objet JSRecommandationManager dans le CommunicationFactory
+
+## Fonctionnement
+Bien le système se porte plus à de petite entrée, j'ai fait le choix de stocker des listes, toutes aux
+même format, pour gérer les données.
+- Une liste d'ami d'un utilisateur, pour stocker ses amis, et retrouver quels sont les nouveaux ajouts.
+- Une liste d'interet d'un utilisateur, pour stocker ses interets, et retrouver quels sont les nouveaux ajouts.
+- Une liste d'utilisateur interessé à un sujet, afin de créer une sorte de "liste d'ami de l'interet"
+
+Ensuite, on guette les mises à jours sur les listes qui nous interessent. En effet, lorsqu'un on met une liste
+à jour, on l'enlève puis on la remet. C'est cette remise qui va activé les listeners. On compare simplement
+les nouvelles listes avec notre liste d'ami, puis on emet les recommendations.
+
+Ce système est plus lourd qu'avec des simples couples, mais est le seul à pouvoir être vraiment exhaustif
+sur la version de River que nous avons. L'absence de transaction ne permet pas de faire des recherches
+correctement (il faut enlever puis remettre les données, activant tout les listeners à chaque recherche).
+
 # Axis2
 ## Présentation générale
 L'application d'Axis2 au projet Socialnetwork pour gérer le stockage et la récuperation se compose de :

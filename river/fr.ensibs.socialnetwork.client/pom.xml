@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.ensibs</groupId>
+    <artifactId>socialnetwork.client</artifactId>
+    <version>4</version>
+    <dependencies>
+        <dependency>
+            <groupId>fr.ensibs</groupId>
+            <artifactId>socialnetwork.common</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.ensibs</groupId>
+            <artifactId>socialnetwork.swing</artifactId>
+            <version>1.0</version>
+        </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>openjms</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>axis2</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.ensibs</groupId>
+                <artifactId>river</artifactId>
+                <version>1.0</version>
+            </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>  <!-- copy the dependencies to the lib/ directory -->
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>  <!-- make an executable jar with classpath to the lib/ dependencies -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>fr.ensibs.socialnetwork.client.ClientMain</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
